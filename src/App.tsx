@@ -1,13 +1,14 @@
 import React from 'react'
 
-import { Header } from './components/Header'
+import { Header, Canvas, Toolbar } from './components'
 import cls from 'styles/components/App.module.sass'
 
 const App = () => (
   <div className={cls.app}>
     <Header />
     <main className={cls.content}>
-      Hello paint online
+      <Canvas />
+      <Toolbar />
     </main>
   </div>
 )
