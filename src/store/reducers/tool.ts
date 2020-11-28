@@ -1,7 +1,9 @@
 const SET_TOOL = 'TOOL/SET_TOOL'
 
 const initialState = {
-  tool: null
+  tool: {
+    toolName: ''
+  }
 }
 
 export type InitialState = typeof initialState
