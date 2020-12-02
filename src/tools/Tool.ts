@@ -6,6 +6,8 @@ export default class Tool {
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+    this.ctx.fillStyle = '#2E3A59'
+    this.ctx.strokeStyle = '#2E3A59'
     this.destroyEvents()
   }
 
