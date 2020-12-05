@@ -11,7 +11,7 @@ export default class Tool {
     this.destroyEvents()
   }
 
-  destroyEvents() {
+  destroyEvents(): void {
     this.canvas.onmousedown = null
     this.canvas.onmousemove = null
     document.onmouseup = null

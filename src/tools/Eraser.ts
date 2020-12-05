@@ -2,7 +2,8 @@ import { Draw } from './Draw'
 
 export class Eraser extends Draw {
   readonly toolName: string = 'Eraser'
-  draw(x: number, y: number) {
+
+  draw(x: number, y: number): void {
     this.ctx.lineTo(x, y)
     this.ctx.fillStyle = 'white'
     this.ctx.strokeStyle = 'white'

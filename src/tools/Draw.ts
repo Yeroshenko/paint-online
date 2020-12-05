@@ -9,30 +9,30 @@ export class Draw extends Tool {
     this.listen()
   }
 
-  listen() {
+  listen(): void {
     this.canvas.onmousedown = this.mouseDownHandler.bind(this)
     this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
     document.onmouseup = this.mouseUpHandler.bind(this)
   }
 
-  mouseDownHandler(e: MouseEvent | any) {
+  mouseDownHandler(e: MouseEvent | any): void {
     this.mouseIsDown = true
     this.ctx.lineWidth = this.lineWidth
     this.ctx.beginPath()
     this.ctx.moveTo(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
   }
 
-  mouseMoveHandler(e: MouseEvent | any) {
+  mouseMoveHandler(e: MouseEvent | any): void {
     if (this.mouseIsDown) {
       this.draw(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
     }
   }
 
-  mouseUpHandler() {
+  mouseUpHandler(): void {
     this.mouseIsDown = false
   }
 
-  draw(x: number, y: number) {
+  draw(x: number, y: number): void {
     this.ctx.lineTo(x, y)
     this.ctx.stroke()
 

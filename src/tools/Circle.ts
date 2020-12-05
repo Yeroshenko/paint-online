@@ -12,13 +12,13 @@ export class Circle extends Tool {
     this.listen()
   }
 
-  listen() {
+  listen(): void {
     this.canvas.onmousedown = this.mouseDownHandler.bind(this)
     this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
     document.onmouseup = this.mouseUpHandler.bind(this)
   }
 
-  mouseDownHandler(e: MouseEvent | any) {
+  mouseDownHandler(e: MouseEvent | any): void {
     this.mouseIsDown = true
     this.ctx.lineWidth = this.lineWidth
     this.ctx.beginPath()
@@ -28,7 +28,7 @@ export class Circle extends Tool {
     this.saved = this.canvas.toDataURL()
   }
 
-  mouseMoveHandler(e: MouseEvent | any) {
+  mouseMoveHandler(e: MouseEvent | any): void {
     let currentX = e.pageX - e.target.offsetLeft
     let currentY = e.pageY - e.target.offsetTop
 
@@ -41,11 +41,11 @@ export class Circle extends Tool {
     }
   }
 
-  mouseUpHandler() {
+  mouseUpHandler(): void {
     this.mouseIsDown = false
   }
 
-  draw(x: number, y: number, r: number) {
+  draw(x: number, y: number, r: number): void {
     const img = new Image()
     img.src = this.saved
 

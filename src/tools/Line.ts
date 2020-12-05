@@ -12,13 +12,13 @@ export class Line extends Tool {
     this.listen()
   }
 
-  listen() {
+  listen(): void {
     this.canvas.onmousedown = this.mouseDownHandler.bind(this)
     this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
     document.onmouseup = this.mouseUpHandler.bind(this)
   }
 
-  mouseDownHandler(e: MouseEvent | any) {
+  mouseDownHandler(e: MouseEvent | any): void {
     this.mouseIsDown = true
     this.ctx.lineWidth = this.lineWidth
     this.ctx.beginPath()
@@ -28,7 +28,7 @@ export class Line extends Tool {
     this.saved = this.canvas.toDataURL()
   }
 
-  mouseMoveHandler(e: MouseEvent | any) {
+  mouseMoveHandler(e: MouseEvent | any): void {
     let currentX = e.pageX - e.target.offsetLeft
     let currentY = e.pageY - e.target.offsetTop
 
@@ -37,18 +37,18 @@ export class Line extends Tool {
     }
   }
 
-  mouseUpHandler() {
+  mouseUpHandler(): void {
     this.mouseIsDown = false
   }
 
-  draw(x: number, y: number) {
+  draw(x: number, y: number): void {
     const img = new Image()
 
     img.src = this.saved
 
     img.onload = () => {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-      this.ctx.drawImage(img, 0 ,0, this.canvas.width, this.canvas.height)
+      this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height)
       this.ctx.beginPath()
 
       this.ctx.moveTo(this.startX, this.startY)
