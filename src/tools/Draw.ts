@@ -15,16 +15,16 @@ export class Draw extends Tool {
     document.onmouseup = this.mouseUpHandler.bind(this)
   }
 
-  mouseDownHandler(e: MouseEvent | any): void {
+  mouseDownHandler(e: MouseEvent): void {
     this.mouseIsDown = true
     this.ctx.lineWidth = this.lineWidth
     this.ctx.beginPath()
-    this.ctx.moveTo(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
+    this.ctx.moveTo(this.getXPosition(e), this.getYPosition(e))
   }
 
-  mouseMoveHandler(e: MouseEvent | any): void {
+  mouseMoveHandler(e: MouseEvent): void {
     if (this.mouseIsDown) {
-      this.draw(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
+      this.draw(this.getXPosition(e), this.getYPosition(e))
     }
   }
 

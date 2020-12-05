@@ -16,4 +16,12 @@ export default class Tool {
     this.canvas.onmousemove = null
     document.onmouseup = null
   }
+
+  getXPosition(e: MouseEvent | any): number {
+    return e.pageX - e.target.offsetLeft
+  }
+
+  getYPosition(e: MouseEvent | any): number {
+    return e.pageY - e.target.offsetTop
+  }
 }

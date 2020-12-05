@@ -18,19 +18,19 @@ export class Line extends Tool {
     document.onmouseup = this.mouseUpHandler.bind(this)
   }
 
-  mouseDownHandler(e: MouseEvent | any): void {
+  mouseDownHandler(e: MouseEvent): void {
     this.mouseIsDown = true
     this.ctx.lineWidth = this.lineWidth
     this.ctx.beginPath()
 
-    this.startX = e.pageX - e.target.offsetLeft
-    this.startY = e.pageY - e.target.offsetTop
+    this.startX = this.getXPosition(e)
+    this.startY = this.getYPosition(e)
     this.saved = this.canvas.toDataURL()
   }
 
-  mouseMoveHandler(e: MouseEvent | any): void {
-    let currentX = e.pageX - e.target.offsetLeft
-    let currentY = e.pageY - e.target.offsetTop
+  mouseMoveHandler(e: MouseEvent): void {
+    let currentX = this.getXPosition(e)
+    let currentY = this.getYPosition(e)
 
     if (this.mouseIsDown) {
       this.draw(currentX, currentY)

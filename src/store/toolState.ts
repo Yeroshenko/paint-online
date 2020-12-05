@@ -1,26 +1,23 @@
 import { makeAutoObservable } from 'mobx'
+import { Circle, Draw, Eraser, Line, Rect } from 'tools'
 
-type Tool = {
-  toolName: ToolName
-}
+type ToolInstance = Circle | Draw | Eraser | Line | Rect
 
 type ToolName = string
 
 class ToolState {
-  tool: Tool = {
-    toolName: ''
-  }
+  tool: ToolInstance | null = null
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  setTool(tool: any): void {
+  setTool(tool: ToolInstance): void {
     this.tool = tool
   }
 
   get toolName(): ToolName {
-    return this.tool.toolName
+    return this.tool ? this.tool.toolName : ''
   }
 }
 
