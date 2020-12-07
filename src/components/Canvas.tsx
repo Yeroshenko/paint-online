@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import { canvasState, toolState } from 'store'
 import { Draw } from 'tools/Draw'
-import cls from 'styles/components/Canvas.module.sass'
+import cls from 'styles/components/canvas.module.sass'
 
 export const Canvas: FC = observer(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null)

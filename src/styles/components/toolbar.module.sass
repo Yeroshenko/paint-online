@@ -23,11 +23,37 @@
   border: none
   cursor: pointer
   outline: transparent
+
   svg
     width: 1em
     height: 1em
+
   svg, path
     fill: currentColor
+
   rect, ellipse
     stroke: currentColor
     fill: none
+
+.colorTool
+  position: relative
+  margin: 12px 0
+
+.colorToolButton
+  @extend .tool
+  span
+    border-radius: 50%
+    width: 80%
+    height: 80%
+
+.colorPicker
+  position: absolute
+  z-index: 99
+  top: 50%
+  left: 135%
+  transform: translateY(-50%)
+
+.blockPicker
+  box-shadow: 1px 2px 4px rgba(33, 42, 69, 0.25)
+  border-radius: 8px
+  overflow: hidden

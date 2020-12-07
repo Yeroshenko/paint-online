@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Header, Canvas, Toolbar } from './components'
-import cls from 'styles/components/App.module.sass'
+import cls from 'styles/components/app.module.sass'
 
 const App = () => (
   <div className={cls.app}>
