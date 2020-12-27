@@ -16,6 +16,18 @@ class ToolState {
     this.tool = tool
   }
 
+  setFillColor(color: string) {
+    if (this.tool) {
+      this.tool.fillColor = color
+    }
+  }
+
+  setLineWidth(width: number) {
+    if (this.tool) {
+      this.tool.lineWidth = width
+    }
+  }
+
   get toolName(): ToolName {
     return this.tool ? this.tool.toolName : ''
   }

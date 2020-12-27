@@ -2,6 +2,8 @@
 .idea
 .vscode
 
+debug.log
+
 # dependencies
 /node_modules
 /.pnp

@@ -1,14 +1,24 @@
 export default class Tool {
   public canvas: HTMLCanvasElement
   public ctx: CanvasRenderingContext2D
-  readonly lineWidth: number = 10
+  public currentLineWidth: number = 10
+  public currentFillColor: string = '#2E3A59'
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D
-    this.ctx.fillStyle = '#2E3A59'
-    this.ctx.strokeStyle = '#2E3A59'
+    this.ctx.fillStyle = this.currentFillColor
+    this.ctx.strokeStyle = this.currentFillColor
     this.destroyEvents()
+  }
+
+  set fillColor(color: string) {
+    this.ctx.fillStyle = color
+    this.ctx.strokeStyle = color
+  }
+
+  set lineWidth(width: number) {
+    this.currentLineWidth = width
   }
 
   destroyEvents(): void {

@@ -20,7 +20,7 @@ export class Rect extends Tool {
 
   mouseDownHandler(e: MouseEvent): void {
     this.mouseIsDown = true
-    this.ctx.lineWidth = this.lineWidth
+    this.ctx.lineWidth = this.currentLineWidth
     this.ctx.beginPath()
 
     this.startX = this.getXPosition(e)

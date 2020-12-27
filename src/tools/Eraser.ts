@@ -10,7 +10,7 @@ export class Eraser extends Draw {
     this.ctx.stroke()
 
     this.ctx.beginPath()
-    this.ctx.arc(x, y, this.lineWidth / 2, 0, Math.PI * 2)
+    this.ctx.arc(x, y, this.currentLineWidth / 2, 0, Math.PI * 2)
     this.ctx.fill()
 
     this.ctx.beginPath()

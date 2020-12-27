@@ -1,8 +1,11 @@
-import React, { FC, useState } from 'react'
-import { BlockPicker } from 'react-color'
+import React, { FC, useEffect, useState } from 'react'
+import { BlockPicker, ColorResult } from 'react-color'
+import { animated, useTransition } from 'react-spring'
+import { observer } from 'mobx-react-lite'
 
 import { canvasState, toolState } from 'store'
 import { Circle, Draw, Eraser, Line, Rect } from 'tools'
+import { useClickOutside } from 'hooks'
 
 import { Tooltip } from 'components'
 import { ReactComponent as DrawIcon } from 'assets/icons/draw.svg'
@@ -14,7 +17,6 @@ import { ReactComponent as UndoIcon } from 'assets/icons/undo.svg'
 import { ReactComponent as RedoIcon } from 'assets/icons/redo.svg'
 import { ReactComponent as SaveIcon } from 'assets/icons/save.svg'
 import cls from 'styles/components/toolbar.module.sass'
-import { animated, useTransition } from 'react-spring'
 
 export const Toolbar: FC = () => {
   const chooseDrawTool = () => toolState.setTool(new Draw(canvasState.canvas))
@@ -43,7 +45,6 @@ export const Toolbar: FC = () => {
       </Tooltip>
 
       <ColorTool />
-
 
       <Tooltip content='Undo'>
         <Tool Icon={UndoIcon} onClick={() => {
@@ -74,17 +75,31 @@ const Tool: FC<ToolProps> = ({ onClick, Icon }) => (
 
 const colorsList = ['#D9E3F0', '#F47373', '#697689', '#37D67A', '#2CCCE4', '#555555', '#dce775', '#ff8a65', '#ba68c8', '#2E3A59']
 
-const ColorTool: FC = () => {
+const ColorTool: FC = observer(() => {
   const [isVisible, setIsVisible] = useState(false)
-  const [selectedColor, setSelectedColor] = useState('#2E3A59')
+  const [selectedColor, setSelectedColor] = useState(toolState.tool?.currentFillColor)
 
   const toggleVisibility = () => setIsVisible(!isVisible)
+  const hidePicker = () => setIsVisible(false)
+
+  const colorChangeHandler = (colorResult: ColorResult) => {
+    setSelectedColor(colorResult.hex)
+    toolState.setFillColor(colorResult.hex)
+  }
 
   const transitions = useTransition(isVisible, null, {
     from: { opacity: 0, transform: 'translate3d(0, -30%, 0)' },
     enter: { opacity: 1, transform: 'translate3d(0, -50%, 0)' },
     leave: { opacity: 0, transform: 'translate3d(0, -70%, 0)' }
   })
+
+  const containerRef = useClickOutside(hidePicker)
+
+  useEffect(() => {
+    setSelectedColor(toolState.tool?.currentFillColor)
+    console.log(toolState.tool?.currentFillColor)
+  }, [toolState.tool?.currentFillColor])
+
 
   return (
     <div className={cls.colorTool}>
@@ -95,16 +110,15 @@ const ColorTool: FC = () => {
       {transitions.map(
         ({ item, key, props }) =>
           item && (
-            <animated.div key={key} style={props} className={cls.colorPicker}>
+            <animated.div key={key} style={props} ref={containerRef} className={cls.colorPicker}>
               <BlockPicker
                 colors={colorsList}
                 triangle={'hide'}
                 color={selectedColor}
-                onChangeComplete={({ hex }) => setSelectedColor(hex)} />
+                onChangeComplete={colorChangeHandler} />
             </animated.div>
           )
       )}
-
     </div>
   )
-}
+})

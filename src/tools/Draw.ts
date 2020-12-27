@@ -17,7 +17,7 @@ export class Draw extends Tool {
 
   mouseDownHandler(e: MouseEvent): void {
     this.mouseIsDown = true
-    this.ctx.lineWidth = this.lineWidth
+    this.ctx.lineWidth = this.currentLineWidth
     this.ctx.beginPath()
     this.ctx.moveTo(this.getXPosition(e), this.getYPosition(e))
   }
@@ -37,7 +37,7 @@ export class Draw extends Tool {
     this.ctx.stroke()
 
     this.ctx.beginPath()
-    this.ctx.arc(x, y, this.lineWidth / 2, 0, Math.PI * 2)
+    this.ctx.arc(x, y, this.currentLineWidth / 2, 0, Math.PI * 2)
     this.ctx.fill()
 
     this.ctx.beginPath()
