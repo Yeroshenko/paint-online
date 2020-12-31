@@ -8,6 +8,12 @@ import cls from 'styles/components/canvas.module.sass'
 export const Canvas: FC = observer(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
+  const mouseDownHandler = () => {
+    if (canvasRef.current) {
+      canvasState.pushToUndo(canvasRef.current.toDataURL())
+    }
+  }
+
   useEffect(() => {
     if (canvasRef.current) {
       canvasState.setCanvas(canvasRef.current)
@@ -17,7 +23,7 @@ export const Canvas: FC = observer(() => {
 
   return (
     <div className={cls.canvasWrap}>
-      <canvas className={cls.canvas} ref={canvasRef} width={1170} height={655} />
+      <canvas className={cls.canvas} ref={canvasRef} width={1170} height={655} onMouseDown={mouseDownHandler} />
     </div>
   )
 })

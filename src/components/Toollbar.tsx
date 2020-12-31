@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 
 import { canvasState, toolState } from 'store'
 import { Circle, Draw, Eraser, Line, Rect } from 'tools'
-import { useClickOutside } from 'hooks'
 
 import { Tooltip } from 'components'
 import { ReactComponent as DrawIcon } from 'assets/icons/draw.svg'
@@ -24,6 +23,8 @@ export const Toolbar: FC = () => {
   const chooseCircleTool = () => toolState.setTool(new Circle(canvasState.canvas))
   const chooseLineTool = () => toolState.setTool(new Line(canvasState.canvas))
   const chooseEraserTool = () => toolState.setTool(new Eraser(canvasState.canvas))
+  const undoHandler = () => canvasState.undo()
+  const redoHandler = () => canvasState.redo()
 
   return (
     <div className={cls.toolbarWrap}>
@@ -47,12 +48,10 @@ export const Toolbar: FC = () => {
       <ColorTool />
 
       <Tooltip content='Undo'>
-        <Tool Icon={UndoIcon} onClick={() => {
-        }} />
+        <Tool Icon={UndoIcon} onClick={undoHandler} />
       </Tooltip>
       <Tooltip content='Redo'>
-        <Tool Icon={RedoIcon} onClick={() => {
-        }} />
+        <Tool Icon={RedoIcon} onClick={redoHandler} />
       </Tooltip>
       <Tooltip content='Save'>
         <Tool Icon={SaveIcon} onClick={() => {
@@ -93,12 +92,10 @@ const ColorTool: FC = observer(() => {
     leave: { opacity: 0, transform: 'translate3d(0, -70%, 0)' }
   })
 
-  const containerRef = useClickOutside(hidePicker)
 
   useEffect(() => {
     setSelectedColor(toolState.tool?.currentFillColor)
-    console.log(toolState.tool?.currentFillColor)
-  }, [toolState.tool?.currentFillColor])
+  }, [toolState.tool])
 
 
   return (
@@ -110,7 +107,7 @@ const ColorTool: FC = observer(() => {
       {transitions.map(
         ({ item, key, props }) =>
           item && (
-            <animated.div key={key} style={props} ref={containerRef} className={cls.colorPicker}>
+            <animated.div key={key} style={props} className={cls.colorPicker} onMouseLeave={hidePicker}>
               <BlockPicker
                 colors={colorsList}
                 triangle={'hide'}
