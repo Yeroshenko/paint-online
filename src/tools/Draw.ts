@@ -4,8 +4,8 @@ export class Draw extends Tool {
   readonly toolName: string = 'Draw'
   private mouseIsDown: boolean = false
 
-  constructor(canvas: HTMLCanvasElement | any) {
-    super(canvas)
+  constructor(canvas: HTMLCanvasElement | any, socket: WebSocket | null, sessionId: string) {
+    super(canvas, socket, sessionId)
     this.listen()
   }
 
@@ -24,23 +24,39 @@ export class Draw extends Tool {
 
   mouseMoveHandler(e: MouseEvent): void {
     if (this.mouseIsDown) {
-      this.draw(this.getXPosition(e), this.getYPosition(e))
+      this.socket?.send(JSON.stringify({
+        method: 'DRAW',
+        id: this.sessionId,
+        figure: {
+          type: 'BRUSH',
+          x: this.getXPosition(e),
+          y: this.getYPosition(e)
+        }
+      }))
     }
   }
 
   mouseUpHandler(): void {
     this.mouseIsDown = false
+
+    this.socket?.send(JSON.stringify({
+      method: 'DRAW',
+      id: this.sessionId,
+      figure: {
+        type: 'FINISH'
+      }
+    }))
   }
 
-  draw(x: number, y: number): void {
-    this.ctx.lineTo(x, y)
-    this.ctx.stroke()
+  static draw(ctx: CanvasRenderingContext2D, x: number, y: number, currentLineWidth: number): void {
+    ctx.lineTo(x, y)
+    ctx.stroke()
 
-    this.ctx.beginPath()
-    this.ctx.arc(x, y, this.currentLineWidth / 2, 0, Math.PI * 2)
-    this.ctx.fill()
+    ctx.beginPath()
+    ctx.arc(x, y, currentLineWidth / 2, 0, Math.PI * 2)
+    ctx.fill()
 
-    this.ctx.beginPath()
-    this.ctx.moveTo(x, y)
+    ctx.beginPath()
+    ctx.moveTo(x, y)
   }
 }

@@ -6,9 +6,11 @@ export class Rect extends Tool {
   private startX: number = 0
   private startY: number = 0
   private saved: string = ''
+  private width: number = 0
+  private height: number = 0
 
-  constructor(canvas: HTMLCanvasElement | any) {
-    super(canvas)
+  constructor(canvas: HTMLCanvasElement | any, socket: WebSocket | null, sessionId: string) {
+    super(canvas, socket, sessionId)
     this.listen()
   }
 
@@ -32,16 +34,30 @@ export class Rect extends Tool {
     let currentX = this.getXPosition(e)
     let currentY = this.getYPosition(e)
 
-    let width = currentX - this.startX
-    let height = currentY - this.startY
+    this.width = currentX - this.startX
+    this.height = currentY - this.startY
 
     if (this.mouseIsDown) {
-      this.draw(this.startX, this.startY, width, height)
+      this.draw(this.startX, this.startY, this.width, this.height)
     }
   }
 
   mouseUpHandler(): void {
     this.mouseIsDown = false
+    this.ctx.beginPath()
+
+    this.socket?.send(JSON.stringify({
+      method: 'DRAW',
+      id: this.sessionId,
+      figure: {
+        type: 'RECT',
+        x: this.startX,
+        y: this.startY,
+        width: this.width,
+        height: this.height,
+        color: this.ctx.fillStyle
+      }
+    }))
   }
 
   draw(x: number, y: number, w: number, h: number): void {
@@ -55,5 +71,12 @@ export class Rect extends Tool {
       this.ctx.rect(x, y, w, h)
       this.ctx.stroke()
     }
+  }
+
+  static serverDraw(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, color: string): void {
+    ctx.strokeStyle = color
+    ctx.beginPath()
+    ctx.rect(x, y, w, h)
+    ctx.stroke()
   }
 }

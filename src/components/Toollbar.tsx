@@ -18,13 +18,25 @@ import { ReactComponent as SaveIcon } from 'assets/icons/save.svg'
 import cls from 'styles/components/toolbar.module.sass'
 
 export const Toolbar: FC = () => {
-  const chooseDrawTool = () => toolState.setTool(new Draw(canvasState.canvas))
-  const chooseRectTool = () => toolState.setTool(new Rect(canvasState.canvas))
-  const chooseCircleTool = () => toolState.setTool(new Circle(canvasState.canvas))
-  const chooseLineTool = () => toolState.setTool(new Line(canvasState.canvas))
-  const chooseEraserTool = () => toolState.setTool(new Eraser(canvasState.canvas))
+  const chooseDrawTool = () => toolState.setTool(new Draw(canvasState.canvas, canvasState.socket, canvasState.sessionId))
+  const chooseRectTool = () => toolState.setTool(new Rect(canvasState.canvas, canvasState.socket, canvasState.sessionId))
+  const chooseCircleTool = () => toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.sessionId))
+  const chooseLineTool = () => toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.sessionId))
+  const chooseEraserTool = () => toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.sessionId))
   const undoHandler = () => canvasState.undo()
   const redoHandler = () => canvasState.redo()
+  const downloadHandler = () => {
+    const dataUrl = canvasState.canvas?.toDataURL()
+    const a = document.createElement('a')
+
+    // TODO: any
+    a.href = dataUrl || ''
+    a.download = canvasState.sessionId + '.jpg'
+
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
 
   return (
     <div className={cls.toolbarWrap}>
@@ -54,8 +66,7 @@ export const Toolbar: FC = () => {
         <Tool Icon={RedoIcon} onClick={redoHandler} />
       </Tooltip>
       <Tooltip content='Save'>
-        <Tool Icon={SaveIcon} onClick={() => {
-        }} />
+        <Tool Icon={SaveIcon} onClick={downloadHandler} />
       </Tooltip>
     </div>
   )
@@ -63,7 +74,7 @@ export const Toolbar: FC = () => {
 
 type ToolProps = {
   onClick: () => void
-  Icon: any
+  Icon: FC
 }
 
 const Tool: FC<ToolProps> = ({ onClick, Icon }) => (
