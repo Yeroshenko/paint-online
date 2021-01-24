@@ -39,7 +39,6 @@ export const Canvas: FC = observer(() => {
     axios.post(`http://localhost:5000/image?id=${sessionId}`, {
       img: canvasRef.current.toDataURL()
     })
-
   }
 
   const connectHandler = ({ username }: ConnectHandler) => {
@@ -89,7 +88,7 @@ export const Canvas: FC = observer(() => {
       }
 
       socket.onmessage = (event) => {
-        const msg = event.data
+        const msg = JSON.parse(event.data)
 
         switch (msg.method) {
           case 'CONNECTION':
